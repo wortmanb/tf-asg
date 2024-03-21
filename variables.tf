@@ -1,0 +1,336 @@
+variable "cluster_name" {
+  type = string
+}
+
+variable "elk_version" {
+  type = string
+}
+
+variable "s3_bucket" {
+  type = string
+}
+
+variable "bootstrap_sleep" {
+  type = string
+  default = "1m"
+}
+
+variable "bootstrap" {
+  type = object({
+    desired = number
+    max = number
+    })
+  default = {
+    max = 1
+    desired = 1
+  }
+}
+
+variable "master" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "master")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "r5n.2xlarge")
+  })
+  default = {
+    min = 3
+    desired = 3
+    max = 3
+  }
+}
+
+variable "hot" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "data_hot")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "warm" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "data_warm")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "cold" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "data_cold")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "frozen" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "data_frozen")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "content" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "data_content")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "ingest" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "ingest")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "coordinator" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "transform" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "transform")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "ml" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    roles = optional(string, "ml")
+    block_devices = optional(list(object({
+      name = string
+      size = number
+      type = string
+      purpose = string
+      delete_on_termination = bool
+    })),
+      [{
+        name = "/dev/xvda"
+        size = 200
+        purpose = "system"
+        type = "gp2"
+        delete_on_termination = true
+      }]
+    )
+    instance_type = optional(string, "i3en.2xlarge")
+  })
+  default = {
+    min = 0
+    desired = 0
+    max = 0
+  }
+}
+
+variable "kibana" {
+  type = object ({
+    min = number
+    desired = number
+    max = number
+    instance_type = optional(string, "r5n.2xlarge")
+    })
+}

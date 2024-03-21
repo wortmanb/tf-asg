@@ -1,0 +1,13 @@
+cluster.name: CLUSETER_NAME
+node.name: HOSTNAME
+node.roles: [NODE_ROLES]
+path.data: /esdata
+path.logs: /var/log/elsaticsearch
+bootstrap.memory_lock: true
+#discovery.seed_hosts: [SEED_HOSTS]
+#cluster.initial_master_nodes: [MASTER_NODES]
+xpack.security.authc:
+  anonymous:
+      username: anonymous_user
+      roles: kibana_system
+      authz_exception: true
