@@ -66,4 +66,38 @@ resource "aws_autoscaling_group" "elastic-asg" {
   lifecycle {
     create_before_destroy = true
   }
+  # ARN of the target group to update with current instances
+  target_group_arn = aws_lb_target_group.elastic-tg.arn
 }
+
+# Create a target group for use by the LB Listener
+resource "aws_lb_target_group" "elastic-tg" {
+  name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-tg"
+  port = 5601
+  protocol = "HTTPS"
+  target_type = "instance"
+}
+
+# Create an ALB for this ASG
+resource "aws_lb" "elastic-lb" {
+  name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-lb"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = var.vpc_security_group_ids
+  subnets = var.subnets
+
+  enable_deletion_protection = true
+}
+
+# Create a LB Listener which knows about the TG and link it to the LB
+resource "aws_lb_listener" "elastic-lb-listener" {
+  load_balancer_arn = aws_lb.elastic-lb.arn
+  port = 5601
+  protocol = "HTTPS"
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.elastic-tg.arn
+  }
+}
+
+
