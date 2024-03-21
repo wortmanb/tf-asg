@@ -99,9 +99,9 @@ hot = {
 # Warm data nodes
 #
 warm = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "data_warm"
 #    instance_type = "i3en.2xlarge"
 }
@@ -109,9 +109,9 @@ warm = {
 # Cold data nodes
 #
 cold = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "data_cold"
 #    instance_type = "i3en.2xlarge"
 # The following is an example block_devices array with a 200GB system device and
@@ -142,9 +142,9 @@ cold = {
 # Frozen data nodes
 #
 frozen = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "data_frozen"
     instance_type = "i3en.2xlarge"
 # The following is an example block_devices array with a 200GB system device and
@@ -182,9 +182,9 @@ frozen = {
 # Ingest nodes
 #
 ingest = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "ingest"
 #    instance_type = "i3en.2xlarge"
 }
@@ -192,18 +192,18 @@ ingest = {
 # Coordinator nodes
 #
 coordinator = {
-    min = 3
-    max = 3
-    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     instance_type = "i3en.2xlarge"
 }
 #
 # Machine Learning nodes
 #
 ml = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "ml"
 #    instance_type = "i3en.2xlarge"
 }
@@ -211,9 +211,9 @@ ml = {
 # Transform nodes
 #
 transform = {
-#    min = 3
-#    max = 3
-#    desired = 3
+    min = 0
+    max = 0
+    desired = 0
     roles = "transform"
 #    instance_type = "i3en.2xlarge"
 }
@@ -221,8 +221,8 @@ transform = {
 # Kibana nodes
 #
 kibana = {
-    min = 1
-    max = 3
-    desired = 1
+    min = 0
+    max = 0
+    desired = 0
 #    instance_type = "r5n.2xlarge"
 }
