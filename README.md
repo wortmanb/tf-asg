@@ -47,7 +47,7 @@ tfd my-cluster
 
 # Cautions
 
-If you need to reboot a node, you will need to put it in standby mode first, reboot, and then take it out of standby mode. Alternately, you can detach it from teh ASG and reattach it after the reboot is complete, but make sure to indicate that you do not want a replacement instance added during the detach step. See this AWS documentation for more details:
+If you need to reboot a node, you will need to put it in standby mode first, reboot, and then take it out of standby mode. Alternately, you can detach it from the ASG and reattach it after the reboot is complete, but make sure to indicate that you do not want a replacement instance added during the detach step. See this AWS documentation for more details:
 https://repost.aws/knowledge-center/reboot-autoscaling-group-instance.
 
 # Contact
