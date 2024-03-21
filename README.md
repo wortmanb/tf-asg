@@ -1,4 +1,4 @@
-# elastic-asg
+# tf-asg
 
 Terraform scripts to create Elasticsearch clusters from AWS Auto Scaling Groups.
 
