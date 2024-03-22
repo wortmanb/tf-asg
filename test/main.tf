@@ -65,14 +65,15 @@ resource "aws_autoscaling_group" "bdw-test-asg" {
   }
   min_size = 0
   max_size = 3
-  desired_capacity = 0
+  desired_capacity = 3
   vpc_zone_identifier = [for net in aws_subnet.public_subnets : net.id]
   termination_policies = ["Default"]
   # lifecycle {
   #   create_before_destroy = true
   # }
   # ARN of the target group to update with current instances
-  target_group_arns = [ aws_lb_target_group.bdw-test-tg.arn ]
+  #target_group_arns = [ aws_lb_target_group.bdw-test-tg[1].arn ]
+  target_group_arns = var.lb ? [ aws_lb_target_group.bdw-test-tg[0].arn ] : []
   tag {
     key = "divison"
     value = "field"
@@ -97,6 +98,7 @@ resource "aws_autoscaling_group" "bdw-test-asg" {
 
 # Create a target group for use by the LB Listener
 resource "aws_lb_target_group" "bdw-test-tg" {
+  count = var.lb ? 1 : 0
   name = "bdw-test-tg"
   port = 5601
   protocol = "HTTP"
@@ -108,11 +110,11 @@ resource "aws_lb_target_group" "bdw-test-tg" {
     team = "consulting"
     project = "@bret"
   }
-
 }
 
 # Create an ALB for this ASG
 resource "aws_lb" "bdw-test-lb" {
+  count = var.lb ? 1 : 0
   name = "bdw-test-lb"
   internal = false
   load_balancer_type = "application"
@@ -130,12 +132,13 @@ resource "aws_lb" "bdw-test-lb" {
 
 # Create a LB Listener which knows about the TG and link it to the LB
 resource "aws_lb_listener" "bdw-test-lb-listener" {
-  load_balancer_arn = aws_lb.bdw-test-lb.arn
+  count = var.lb ? 1 : 0
+  load_balancer_arn = aws_lb.bdw-test-lb[count.index].arn
   port = 5601
   protocol = "HTTP"
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.bdw-test-tg.arn
+    target_group_arn = aws_lb_target_group.bdw-test-tg[count.index].arn
   }
   tags = {
     division = "field"
@@ -143,7 +146,6 @@ resource "aws_lb_listener" "bdw-test-lb-listener" {
     team = "consulting"
     project = "@bret"
   }
-
 }
 
 
