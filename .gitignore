@@ -3,3 +3,5 @@
 *.*state*
 *~
 .python-version
+.terraform/*
+**/.terraform
