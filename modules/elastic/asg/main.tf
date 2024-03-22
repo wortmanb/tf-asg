@@ -12,7 +12,7 @@ resource "aws_launch_template" "elastic-lt" {
     http_tokens = "optional"
   }
 
-  update_defeault_version = true
+  update_default_version = true
 
   block_device_mappings {
     for_each = var.block_devices
@@ -76,6 +76,7 @@ resource "aws_lb_target_group" "elastic-tg" {
   port = 5601
   protocol = "HTTPS"
   target_type = "instance"
+  vpc_id = ""
 }
 
 # Create an ALB for this ASG
