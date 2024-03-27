@@ -69,6 +69,11 @@ variable "user_data_script" {
   type = string
 }
 
+variable "has_load_balancer" {
+  type = bool
+  default = false
+}
+
 variable "block_devices" {
   type = list(object([
     name = string

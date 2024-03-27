@@ -27,6 +27,30 @@ variable "instance_type" {
   description = "Instance type"
 }
 
+variable "subnets" {
+  type = list(string)
+  default = [ "subnet-1", "subnet-2", "subnet-3" ]
+}
+
+variable "security_group_names" {
+  type = list(string)
+  default = [ "default", "security-group-name-1" ]
+}
+
+variable "security_group_ids" {
+  type = list(string)
+  default = [ "sg-1", "sg-2" ]
+}
+
+variable "user_data_script" {
+  type = string
+}
+
+variable "has_load_balancer" {
+  type = bool
+  default = false
+}
+
 variable "block_devices" {
   type = list(object([
     name = string
