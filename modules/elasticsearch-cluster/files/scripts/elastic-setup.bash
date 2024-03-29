@@ -3,20 +3,20 @@
 export AWS_DEFAULT_REGION=us-iso-east-1
 export AWS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
-# function to set up elasticsearch repository
-function create_elastic_repository() {
-    rpm --import httpp://artifacts.elastic.co/GPG-KEY-elasticsearch
-    cat <<EOF >>/etc/yum.repos.d/elasticsearch.repo
-[elasticsearch]
-name=Elasticsearch repository for 8.x packages
-baseurl=https://artifacts.elastic.co/packages/8.x/yum
-gpgcheck=1
-gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-enabled=0
-autorefresh=1
-type=rpm-md
-EOF
-}
+# # function to set up elasticsearch repository
+# function create_elastic_repository() {
+#     rpm --import http://artifacts.elastic.co/GPG-KEY-elasticsearch
+#     cat <<EOF >>/etc/yum.repos.d/elasticsearch.repo
+# [elasticsearch]
+# name=Elasticsearch repository for 8.x packages
+# baseurl=https://artifacts.elastic.co/packages/8.x/yum
+# gpgcheck=1
+# gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+# enabled=0
+# autorefresh=1
+# type=rpm-md
+# EOF
+# }
 
 function create_elastic_disk() {
     # Check if logical volumen manager is installed and
@@ -47,25 +47,25 @@ function create_elastic_disk() {
     mount -a
 }
 
-function create_elastic_os_settings() {
-    # https://www.elastic.co/guide/en/elasticdsearch/reference/current/system-config.html
-    # Most system settings are set by the rpm installation in /etc/sysconfig/elasticsearch
-    echo "net.ipv4.tcp_retries2=5" >> /etc/sysctl.conf
-    echo "vm.max_map_count=262144" >> /etc/sysctl.conf
-    echo "vm.swappiness=0" >> /etc/sysctl.conf
-    echo "fs.file-max=1048576" >> /etc/sysctl.conf
-    /sbin/sysctl -p /etc/sysctl.conf
+# function create_elastic_os_settings() {
+#     # https://www.elastic.co/guide/en/elasticdsearch/reference/current/system-config.html
+#     # Most system settings are set by the rpm installation in /etc/sysconfig/elasticsearch
+#     echo "net.ipv4.tcp_retries2=5" >> /etc/sysctl.conf
+#     echo "vm.max_map_count=262144" >> /etc/sysctl.conf
+#     echo "vm.swappiness=0" >> /etc/sysctl.conf
+#     echo "fs.file-max=1048576" >> /etc/sysctl.conf
+#     /sbin/sysctl -p /etc/sysctl.conf
 
-    echo "*        soft   nofile   1048576" >> /etc/security/limits.conf
-    echo "*        hard   nofile   1048576" >> /etc/security/limits.conf
-    echo "root     soft   nofile   1048576" >> /etc/security/limits.conf
-    echo "root     hard   nofile   1048576" >> /etc/security/limits.conf
-    echo "*        soft   nproc    20000" >> /etc/security/limits.conf
-    echo "*        hard   nproc    20000" >> /etc/security/limits.conf
-    echo "root     soft   nproc    unlimited" >> /etc/security/limits.conf
-    echo "root     hard   nproc    unlimited" >> /etc/security/limits.conf
-    echo "elasticsearch - memlock unlimited" >> /etc/security/limits.conf
-}
+#     echo "*        soft   nofile   1048576" >> /etc/security/limits.conf
+#     echo "*        hard   nofile   1048576" >> /etc/security/limits.conf
+#     echo "root     soft   nofile   1048576" >> /etc/security/limits.conf
+#     echo "root     hard   nofile   1048576" >> /etc/security/limits.conf
+#     echo "*        soft   nproc    20000" >> /etc/security/limits.conf
+#     echo "*        hard   nproc    20000" >> /etc/security/limits.conf
+#     echo "root     soft   nproc    unlimited" >> /etc/security/limits.conf
+#     echo "root     hard   nproc    unlimited" >> /etc/security/limits.conf
+#     echo "elasticsearch - memlock unlimited" >> /etc/security/limits.conf
+# }
 
 function get_az() {
     # The last character of the placement value is the AZ
