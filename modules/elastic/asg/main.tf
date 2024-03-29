@@ -5,7 +5,7 @@ resource "aws_launch_template" "elastic-lt" {
 
   key_name = var.key_pair
 
-  vpc_security_group_ids = var.vpc_security_group_ids
+  #vpc_security_group_ids = var.security_group_ids
 
   metadata_options { 
     http_endpoint = "enabled"
@@ -14,7 +14,7 @@ resource "aws_launch_template" "elastic-lt" {
 
   update_default_version = true
 
-  block_device_mappings {
+  dynamic "block_device_mappings" {
     for_each = var.block_devices
     content {
       device_name = block_device_mappings.value["name"]
@@ -45,10 +45,19 @@ resource "aws_launch_template" "elastic-lt" {
     )
   }
 
-  user_data = base64encode(var.user_data_scripts)
+  user_data = base64encode(var.user_data_script)
 
   iam_instance_profile {
-    name = "my-instance-profile"
+    name = "bdw-test-profile"
+  }
+
+  # Network interface configuration
+  network_interfaces {
+    # Associates a public IP address with the instance
+    associate_public_ip_address = true
+
+    # Security groups to associate with the instance
+    security_groups = var.security_group_ids
   }
 }
 
@@ -67,38 +76,40 @@ resource "aws_autoscaling_group" "elastic-asg" {
     create_before_destroy = true
   }
   # ARN of the target group to update with current instances
-  target_group_arn = aws_lb_target_group.elastic-tg.arn
+  #target_group_arns = [ aws_lb_target_group.elastic-tg.arn ]
 }
 
-# Create a target group for use by the LB Listener
-resource "aws_lb_target_group" "elastic-tg" {
-  name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-tg"
-  port = 5601
-  protocol = "HTTPS"
-  target_type = "instance"
-  vpc_id = ""
-}
+# # Create a target group for use by the LB Listener
+# resource "aws_lb_target_group" "elastic-tg" {
+#   name = "tftf-kibana-tg"
+#   #name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-tg"
+#   port = 5601
+#   protocol = "HTTP"
+#   target_type = "instance"
+#   vpc_id = "vpc-0df744fa7bf6b3442"
+# }
 
-# Create an ALB for this ASG
-resource "aws_lb" "elastic-lb" {
-  name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-lb"
-  internal = false
-  load_balancer_type = "application"
-  security_groups = var.vpc_security_group_ids
-  subnets = var.subnets
+# # Create an ALB for this ASG
+# resource "aws_lb" "elastic-lb" {
+#   name = "tftf-kibana-lb"
+#   # name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-lb"
+#   internal = false
+#   load_balancer_type = "application"
+#   security_groups = var.security_group_ids
+#   subnets = var.subnets
 
-  enable_deletion_protection = true
-}
+#   enable_deletion_protection = false
+# }
 
-# Create a LB Listener which knows about the TG and link it to the LB
-resource "aws_lb_listener" "elastic-lb-listener" {
-  load_balancer_arn = aws_lb.elastic-lb.arn
-  port = 5601
-  protocol = "HTTPS"
-  default_action {
-    type = "forward"
-    target_group_arn = aws_lb_target_group.elastic-tg.arn
-  }
-}
+# # Create a LB Listener which knows about the TG and link it to the LB
+# resource "aws_lb_listener" "elastic-lb-listener" {
+#   load_balancer_arn = aws_lb.elastic-lb.arn
+#   port = 5601
+#   protocol = "HTTP"
+#   default_action {
+#     type = "forward"
+#     target_group_arn = aws_lb_target_group.elastic-tg.arn
+#   }
+# }
 
 

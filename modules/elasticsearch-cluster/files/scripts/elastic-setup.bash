@@ -3,20 +3,20 @@
 export AWS_DEFAULT_REGION=us-iso-east-1
 export AWS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
-# # function to set up elasticsearch repository
-# function create_elastic_repository() {
-#     rpm --import http://artifacts.elastic.co/GPG-KEY-elasticsearch
-#     cat <<EOF >>/etc/yum.repos.d/elasticsearch.repo
-# [elasticsearch]
-# name=Elasticsearch repository for 8.x packages
-# baseurl=https://artifacts.elastic.co/packages/8.x/yum
-# gpgcheck=1
-# gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-# enabled=0
-# autorefresh=1
-# type=rpm-md
-# EOF
-# }
+# function to set up elasticsearch repository
+function create_elastic_repository() {
+    rpm --import http://artifacts.elastic.co/GPG-KEY-elasticsearch
+    cat <<EOF >>/etc/yum.repos.d/elasticsearch.repo
+[elasticsearch]
+name=Elasticsearch repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=0
+autorefresh=1
+type=rpm-md
+EOF
+}
 
 function create_elastic_disk() {
     # Check if logical volumen manager is installed and
@@ -125,7 +125,8 @@ get_node_tags
 create_elastic_disk
 
 # Create Elasticsearch repository
-#create_elasticsearch_repository
+create_elasticsearch_repository
+
 
 # Set up elastic os settings
 # commented out as these are part of the AMI we're using now; uncomment if you need them

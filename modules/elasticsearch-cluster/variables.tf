@@ -9,6 +9,9 @@ variable "tags" {
 
 variable "asg-specific-tags" {
   type = map(string)
+  default = {
+    NODE_ROLES = "DEFINE-ME"
+  }
 }
 
 variable "desired_capacity" {

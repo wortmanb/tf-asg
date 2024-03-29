@@ -35,8 +35,7 @@ variable "master" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -70,8 +69,7 @@ variable "hot" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -105,8 +103,7 @@ variable "warm" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -140,8 +137,7 @@ variable "cold" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -175,8 +171,7 @@ variable "frozen" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -210,8 +205,7 @@ variable "content" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -245,8 +239,7 @@ variable "ingest" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -280,8 +273,7 @@ variable "coordinator" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -315,8 +307,7 @@ variable "transform" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number
@@ -350,8 +341,7 @@ variable "ml" {
     subnets = optional(list(string))
     security_group_names = optional(list(string))
     security_group_ids = optional(list(string))
-    user_data_script = optional(string)
-    has_load_balancer = optional(bool)
+    has_load_balancer = optional(bool, false)
     block_devices = optional(list(object({
       name = string
       size = number

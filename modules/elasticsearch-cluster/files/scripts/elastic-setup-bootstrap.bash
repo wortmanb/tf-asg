@@ -5,7 +5,7 @@ export AWS_CA_BUNDLE=/etc/pki/tls/certs/ca-bundle.crt
 
 # function to set up elasticsearch repository
 function create_elastic_repository() {
-    rpm --import httpp://artifacts.elastic.co/GPG-KEY-elasticsearch
+    rpm --import http://artifacts.elastic.co/GPG-KEY-elasticsearch
     cat <<EOF >>/etc/yum.repos.d/elasticsearch.repo
 [elasticsearch]
 name=Elasticsearch repository for 8.x packages
@@ -19,7 +19,7 @@ EOF
 }
 
 function create_elastic_disk() {
-    # Check if logical volumen manager is installed and
+    # Check if logical volume manager is installed and
     # install it if not
     yum list installed lvm2 || yum install -y lvm2
     yum list installed nvme-cli || yum install -y nvme-cli

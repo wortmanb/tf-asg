@@ -23,7 +23,7 @@ variable "max" {
 
 variable "key_pair" {
   type = string
-  default = "my-aws-key-pair-id-CHANGE-ME"
+  default = "bdw-test-kp"
 }
 
 variable "instance_type" {
@@ -33,7 +33,7 @@ variable "instance_type" {
 
 variable "ami_id" {
   type = string
-  default = "ami-id-CHANGE-ME"
+  default = "ami-0c101f26f147fa7fd"
 }
 
 variable "install_type" {
@@ -43,17 +43,17 @@ variable "install_type" {
 
 variable "subnets" {
   type = list(string)
-  default = [ "subnet-a", "subnet-b", "subnet-c" ]
+  default = [ "subnet-0449011342c679f55", "subnet-096499b2a566162af", "subnet-0cdd62554724ce9f0" ]
 }
 
 variable "security_group_names" {
   type = list(string)
-  default = [ "default", "sg-1" ]
+  default = [ "default" ]
 }
 
 variable "security_group_ids" {
   type = list(string)
-  default = [ "sg-1", "sg-2" ]
+  default = [ "sg-0e877fae75357a7b1" ]
 }
 
 # aws s3 path is hardcoded for now. We need to update this but had issues

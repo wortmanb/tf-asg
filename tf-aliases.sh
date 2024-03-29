@@ -11,11 +11,11 @@ export PLUGIN_DIR=/elastic/.terraform.d/plugins
 alias gotf='cd /elastic/asg/terraform-asg'
 
 function tfp {
-    terraform plan -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate
+    terraform plan -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate ${2}
 }
 function tfa {
-    terraform apply -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate
+    terraform apply -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate ${2}
 }
 function tfd {
-    terraform destroy -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate
+    terraform destroy -var-file ${1%.tfvars}.tfvars -state ${1%.tfvars}.tfstate ${2}
 }

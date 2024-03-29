@@ -32,17 +32,17 @@ variable "maximum_capacity" {
 
 variable "key_pair" {
   type = string
-  default = "my-default-keypair"
+  default = "bdw-test-kp"
 }
 
 variable "instance_type" {
   type = string
-  default = "my-favorite-instance-type"
+  default = "t2.micro"
 }
 
 variable "ami_id" {
   type = string
-  default = "my-favorite-ami"
+  default = "ami-0c101f26f147fa7fd"
 }
 
 variable "install_type" {
@@ -52,17 +52,17 @@ variable "install_type" {
 
 variable "subnets" {
   type = list(string)
-  default = [ "subnet-1", "subnet-2", "subnet-3" ]
+  default = [ "subnet-0449011342c679f55", "subnet-096499b2a566162af", "subnet-0cdd62554724ce9f0" ]
 }
 
 variable "security_group_names" {
   type = list(string)
-  default = [ "default", "security-group-name-1" ]
+  default = [ "default" ]
 }
 
 variable "security_group_ids" {
   type = list(string)
-  default = [ "sg-1", "sg-2" ]
+  default = [ "sg-0e877fae75357a7b1" ]
 }
 
 variable "user_data_script" {
@@ -75,12 +75,12 @@ variable "has_load_balancer" {
 }
 
 variable "block_devices" {
-  type = list(object([
-    name = string
-    size = number
-    type = string
-    delete_on_termination = bool
-  ]))
+  type = list(object({
+      name = string
+      size = number
+      type = string
+      delete_on_termination = bool
+    }))
 }
 
 

@@ -42,22 +42,18 @@ variable "security_group_ids" {
   default = [ "sg-1", "sg-2" ]
 }
 
-variable "user_data_script" {
-  type = string
-}
-
 variable "has_load_balancer" {
   type = bool
   default = false
 }
 
 variable "block_devices" {
-  type = list(object([
+  type = list(object({
     name = string
     size = number
     type = string
     delete_on_termination = bool
-  ]))
+  }))
   default = [{
     name = "/dev/xvda"
     size = 200
