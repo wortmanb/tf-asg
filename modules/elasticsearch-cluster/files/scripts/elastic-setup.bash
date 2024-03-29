@@ -38,10 +38,10 @@ function create_elastic_disk() {
     vgcreate LVMelastic "${disks[@]}"
     lvcreate -l ${#disks[@]} -y -Wy -Zy -n vol_esdata -l 100%FREE LVMelastic
     wipefs -a /dev/LVMelastic/vol_esdata
-    mkfs.ext4 /dev/LVMelastic/vol_esdata
+    mkfs.xfs /dev/LVMelastic/vol_esdata
     blkid /dev/LVMelastic/vol_esdata
     UUID=$(blkid /dev/LVMelastic/vol_esdata | awk '{print $2}' | sed s/\"//g)
-    echo "${UUID} /esdata ext4 defaults 0 0" >> /etc/fstab
+    echo "${UUID} /esdata xfs defaults 0 0" >> /etc/fstab
     systemctl daemon-reload
     mkdir /esdata
     mount -a
