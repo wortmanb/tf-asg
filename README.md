@@ -54,5 +54,5 @@ https://repost.aws/knowledge-center/reboot-autoscaling-group-instance.
 
 This code was developed for a particular purpose and a particular environment, and for a particular set of clusters. It may not be useable in your situation without modification, though we have attempted to move as much dependency to variables as possible. If you have questions, feel free to contact one of the original authors below.
 
-- tim.hosfelt@elastic.co
-- bret.wortman@elastic.co
+- Tim Hosfelt
+- Bret Wortman: bret.wortman@elastic.co
