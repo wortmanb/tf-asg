@@ -10,6 +10,11 @@ variable "s3_bucket" {
   type = string
 }
 
+variable "aws_region" {
+  description = "AWS region for deployments; must be set explicitly per environment."
+  type = string
+}
+
 variable "bootstrap_sleep" {
   type = string
   default = "1m"

@@ -161,11 +161,10 @@ IP=$(ping "${hostname}" -c1 -q | head -1 | awk '{print $3}' | sed 's/.*(\(.*\)).
 get_elastic_kp
 
 echo "The node_count is greater than 1, enrolling into the cluster."
-export ENROLLMENT_TOKEN=$(get_enrollment_token)
-echo "Enrollment token: ${ENROLLMENT_TOKEN}"
+export ENROLLMENT_TOKEN="$(get_enrollment_token)"
 
 date
-/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollmen t-token ${ENROLLMENT_TOKEN} << EOF
+/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token "${ENROLLMENT_TOKEN}" << EOF
 y
 EOF
 
@@ -207,7 +206,13 @@ aws --no-verify-ssl s3 cp wildcard-cert.pem s3://${S3_BUCKET}/${CLUSTER_NAME}/el
 
 aws --no-verify-ssl s3 cp s3://${S3_BUCKET}/${CLUSTER_NAME}/scripts/elastic-reset-password.sh /tmp
 sh elastic-reset-password.sh
-aws --no-verify-ssl s3 cp ELASTIC_PASSWORD s3://${S3_BUCKET}/${CLUSTER_NAME}/elasticsearch/ELASTIC_PASSWORD
+
+STORE_ELASTIC_PASSWORD_SSM=${STORE_ELASTIC_PASSWORD_SSM:-false}
+SSM_PASSWORD_PARAM=${SSM_PASSWORD_PARAM:-"/${CLUSTER_NAME}/elasticsearch/elastic_password"}
+if [ "$STORE_ELASTIC_PASSWORD_SSM" = "true" ]; then
+  aws ssm put-parameter --name "$SSM_PASSWORD_PARAM" --type SecureString --value "$(cat /tmp/ELASTIC_PASSWORD)" --overwrite
+fi
+
 uname -n > BOOTSTRAP_NODE_IP
 aws --no-verify-ssl s3 cp BOOTSTRAP_NODE_IP s3://${S3_BUCKET}/${CLUSTER_NAME}/elasticsearch/BOOTSTRAP_NODE_IP
 
@@ -219,3 +224,9 @@ curl -sku elastic:$(cat /tmp/ELASTIC_PASSWORD) -XPUT "https://localhost:9200/_li
         #
     }
 }'
+
+if command -v shred >/dev/null 2>&1; then
+  shred -u /tmp/ELASTIC_PASSWORD
+else
+  rm -f /tmp/ELASTIC_PASSWORD
+fi

@@ -1,6 +1,6 @@
 module "create_aws_autoscaling_group" {
   source = "../elastic/asg"
-  asg-specific-tags = {
+  asg_specific_tags = {
     NODE_ROLES = var.roles
   }
   tags = var.tags
@@ -38,7 +38,7 @@ skip_if_unavailable=1
 EOF
 
 aws s3 --no-verify-ssl cp s3://my-s3-bucket/${var.tags.CLUSTER_NAME}/scripts/elastic-setup.bash /tmp >> /tmp/setup.out 2>&1
-chmod =x /tmp/elastic-setup.bash
+chmod +x /tmp/elastic-setup.bash
 cd /tmp
 ./elastic-setup.bash >> /tmp/setup.out 2>&1
 EOT 

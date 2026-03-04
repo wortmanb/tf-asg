@@ -2,7 +2,7 @@ variable "tags" {
   type = map(string)
 }
 
-variable "asg-specific-tags" {
+variable "asg_specific_tags" {
   type = map(string)
   default = {
     NODE_ROLES = "kibana"
@@ -90,7 +90,7 @@ skip_if_unavailable=1
 EOF
 
 aws s3 --no-verify-ssl cp s3://my-s3-bucket/path-to-scripts-FIXME/scripts/kibana-setup.bash /tmp >> /tmp/setup.out 2>&1
-chmod =x /tmp/kibana-setup.bash
+chmod +x /tmp/kibana-setup.bash
 cd /tmp
 ./kibana-setup.bash >> /tmp/setup.out 2>&1
 EOT
