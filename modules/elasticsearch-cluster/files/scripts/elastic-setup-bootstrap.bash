@@ -161,11 +161,10 @@ IP=$(ping "${hostname}" -c1 -q | head -1 | awk '{print $3}' | sed 's/.*(\(.*\)).
 get_elastic_kp
 
 echo "The node_count is greater than 1, enrolling into the cluster."
-export ENROLLMENT_TOKEN=$(get_enrollment_token)
-echo "Enrollment token: ${ENROLLMENT_TOKEN}"
+export ENROLLMENT_TOKEN="$(get_enrollment_token)"
 
 date
-/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollmen t-token ${ENROLLMENT_TOKEN} << EOF
+/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token "${ENROLLMENT_TOKEN}" << EOF
 y
 EOF
 
@@ -207,7 +206,8 @@ aws --no-verify-ssl s3 cp wildcard-cert.pem s3://${S3_BUCKET}/${CLUSTER_NAME}/el
 
 aws --no-verify-ssl s3 cp s3://${S3_BUCKET}/${CLUSTER_NAME}/scripts/elastic-reset-password.sh /tmp
 sh elastic-reset-password.sh
-aws --no-verify-ssl s3 cp ELASTIC_PASSWORD s3://${S3_BUCKET}/${CLUSTER_NAME}/elasticsearch/ELASTIC_PASSWORD
+# TODO: store password in SSM/Secrets Manager instead of S3 or /tmp
+# aws ssm put-parameter --name "/${CLUSTER_NAME}/elasticsearch/elastic_password" --type SecureString --value "$(cat /tmp/ELASTIC_PASSWORD)"
 uname -n > BOOTSTRAP_NODE_IP
 aws --no-verify-ssl s3 cp BOOTSTRAP_NODE_IP s3://${S3_BUCKET}/${CLUSTER_NAME}/elasticsearch/BOOTSTRAP_NODE_IP
 

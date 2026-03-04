@@ -1,5 +1,5 @@
 resource "aws_launch_template" "elastic-lt" {
-  name          = "${var.tags.CLUSTER_NAME}-elastic-${var.asg-specific-tags.NODE_ROLES}-lt"
+  name          = "${var.tags.CLUSTER_NAME}-elastic-${var.asg_specific_tags.NODE_ROLES}-lt"
   instance_type = var.instance_type
   image_id      = var.ami_id
 
@@ -9,7 +9,7 @@ resource "aws_launch_template" "elastic-lt" {
 
   metadata_options {
     http_endpoint = "enabled"
-    http_tokens = "optional" # you can set it to "required" or "optional"
+    http_tokens = "required" # you can set it to "required" or "optional"
   }
 
   update_default_version = true
@@ -27,9 +27,9 @@ resource "aws_launch_template" "elastic-lt" {
     resource_type = "instance"
     tags = merge(
       var.tags,
-      var.asg-specific-tags,
+      var.asg_specific_tags,
       {
-        "Name" = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}"
+        "Name" = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}"
       }
     )
   }
@@ -38,7 +38,7 @@ resource "aws_launch_template" "elastic-lt" {
     resource_type = "volume"
     tags = merge(
       var.tags,
-      var.asg-specific-tags
+      var.asg_specific_tags
     )
   }
 
@@ -51,7 +51,7 @@ resource "aws_launch_template" "elastic-lt" {
 
 # Create an Auto Scaling Group (ASG)
 resource "aws_autoscaling_group" "elastic-asg" {
-  name_prefix = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-asg-"
+  name_prefix = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}-asg-"
   launch_template {
     name = aws_launch_template.elastic-lt.name
     version = aws_launch_template.elastic-lt.latest_version

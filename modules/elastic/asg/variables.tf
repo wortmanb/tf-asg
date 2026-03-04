@@ -7,7 +7,7 @@ variable "tags" {
   }
 }
 
-variable "asg-specific-tags" {
+variable "asg_specific_tags" {
   type = map(string)
   default = {
     NODE_ROLES = "DEFINE-ME"

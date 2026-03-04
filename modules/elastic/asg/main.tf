@@ -1,5 +1,5 @@
 resource "aws_launch_template" "elastic-lt" {
-  name = "${var.tags.CLUSTER_NAME}-elastic-${var.asg-specific-tags.NODE_ROLES}-lt"
+  name = "${var.tags.CLUSTER_NAME}-elastic-${var.asg_specific_tags.NODE_ROLES}-lt"
   instance_type = var.instance_type
   image_id = var.ami_id
 
@@ -9,7 +9,7 @@ resource "aws_launch_template" "elastic-lt" {
 
   metadata_options { 
     http_endpoint = "enabled"
-    http_tokens = "optional"
+    http_tokens = "required"
   }
 
   update_default_version = true
@@ -30,9 +30,9 @@ resource "aws_launch_template" "elastic-lt" {
     resource_type = "instance"
     tags = merge(
       var.tags,
-      var.asg-specific-tags,
+      var.asg_specific_tags,
       {
-        "Name" = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}"
+        "Name" = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}"
       }
     )
   }
@@ -41,7 +41,7 @@ resource "aws_launch_template" "elastic-lt" {
     resource_type = "volume"
     tags = merge(
       var.tags,
-      var.asg-specific-tags
+      var.asg_specific_tags
     )
   }
 
@@ -62,7 +62,7 @@ resource "aws_launch_template" "elastic-lt" {
 }
 
 resource "aws_autoscaling_group" "elastic-asg" {
-  name_prefix = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-asg-"
+  name_prefix = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}-asg-"
   launch_template {
     name = aws_launch_template.elastic-lt.name
     version = aws_launch_template.elastic-lt.latest_version
@@ -82,7 +82,7 @@ resource "aws_autoscaling_group" "elastic-asg" {
 # # Create a target group for use by the LB Listener
 # resource "aws_lb_target_group" "elastic-tg" {
 #   name = "tftf-kibana-tg"
-#   #name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-tg"
+#   #name = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}-tg"
 #   port = 5601
 #   protocol = "HTTP"
 #   target_type = "instance"
@@ -92,7 +92,7 @@ resource "aws_autoscaling_group" "elastic-asg" {
 # # Create an ALB for this ASG
 # resource "aws_lb" "elastic-lb" {
 #   name = "tftf-kibana-lb"
-#   # name = "${var.tags.CLUSTER_NAME}-${var.asg-specific-tags.NODE_ROLES}-lb"
+#   # name = "${var.tags.CLUSTER_NAME}-${var.asg_specific_tags.NODE_ROLES}-lb"
 #   internal = false
 #   load_balancer_type = "application"
 #   security_groups = var.security_group_ids

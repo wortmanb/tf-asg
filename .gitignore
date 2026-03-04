@@ -6,3 +6,8 @@
 .terraform/*
 **/.terraform
 .terraform*
+*.pem
+*.key
+*.p12
+**/key_pairs/
+**/certs/

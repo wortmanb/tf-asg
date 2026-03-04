@@ -162,11 +162,10 @@ IP=$(ping "${hostname}" -c1 -q | head -1 | awk '{print $3}' | sed 's/.*(\(.*\)).
 get_elastic_kp
 
 echo "The node_count is greater than 1, enrolling into the cluster."
-export ENROLLMENT_TOKEN=$(get_enrollment_token)
-echo "Enrollment token: ${ENROLLMENT_TOKEN}"
+export ENROLLMENT_TOKEN="$(get_enrollment_token)"
 
 date
-/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollmen t-token ${ENROLLMENT_TOKEN} << EOF
+/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token "${ENROLLMENT_TOKEN}" << EOF
 y
 EOF
 

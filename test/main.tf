@@ -37,9 +37,9 @@ resource "aws_launch_template" "bdw-test-lt" {
   #   resource_type = "instance"
   #   tags = merge(
   #     var.tags,
-  #     var.asg-specific-tags,
+  #     var.asg_specific_tags,
   #     {
-  #       "Name" = "${var.asg-specific-tags.NODE_ROLES}"
+  #       "Name" = "${var.asg_specific_tags.NODE_ROLES}"
   #     }
   #   )
   # }
@@ -48,7 +48,7 @@ resource "aws_launch_template" "bdw-test-lt" {
   #   resource_type = "volume"
   #   tags = merge(
   #     var.tags,
-  #     var.asg-specific-tags
+  #     var.asg_specific_tags
   #   )
   # }
 

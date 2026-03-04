@@ -1,10 +1,3 @@
-resource "aws_s3_object" "elastic-key-pair" {
-  bucket = var.tags.S3_BUCKET
-  key = "${var.tags.CLUSTER_NAME}/certs/ncave-prod-elastic.pem"
-  source = "modules/elasticsearch-cluster/key_pairs/ncave-prod-elastic.pem"
-  acl = "private"
-}
-
 resource "aws_s3_object" "elastic-setup-bootstrap-script" {
   bucket = var.tags.S3_BUCKET
   key = "${var.tags.CLUSTER_NAME}/scripts/elastic-setup-bootstrap.bash"
