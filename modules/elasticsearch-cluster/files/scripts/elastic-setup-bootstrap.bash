@@ -206,8 +206,13 @@ aws --no-verify-ssl s3 cp wildcard-cert.pem s3://${S3_BUCKET}/${CLUSTER_NAME}/el
 
 aws --no-verify-ssl s3 cp s3://${S3_BUCKET}/${CLUSTER_NAME}/scripts/elastic-reset-password.sh /tmp
 sh elastic-reset-password.sh
-# TODO: store password in SSM/Secrets Manager instead of S3 or /tmp
-# aws ssm put-parameter --name "/${CLUSTER_NAME}/elasticsearch/elastic_password" --type SecureString --value "$(cat /tmp/ELASTIC_PASSWORD)"
+
+STORE_ELASTIC_PASSWORD_SSM=${STORE_ELASTIC_PASSWORD_SSM:-false}
+SSM_PASSWORD_PARAM=${SSM_PASSWORD_PARAM:-"/${CLUSTER_NAME}/elasticsearch/elastic_password"}
+if [ "$STORE_ELASTIC_PASSWORD_SSM" = "true" ]; then
+  aws ssm put-parameter --name "$SSM_PASSWORD_PARAM" --type SecureString --value "$(cat /tmp/ELASTIC_PASSWORD)" --overwrite
+fi
+
 uname -n > BOOTSTRAP_NODE_IP
 aws --no-verify-ssl s3 cp BOOTSTRAP_NODE_IP s3://${S3_BUCKET}/${CLUSTER_NAME}/elasticsearch/BOOTSTRAP_NODE_IP
 
@@ -219,3 +224,9 @@ curl -sku elastic:$(cat /tmp/ELASTIC_PASSWORD) -XPUT "https://localhost:9200/_li
         #
     }
 }'
+
+if command -v shred >/dev/null 2>&1; then
+  shred -u /tmp/ELASTIC_PASSWORD
+else
+  rm -f /tmp/ELASTIC_PASSWORD
+fi

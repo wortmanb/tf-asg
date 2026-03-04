@@ -12,7 +12,7 @@ resource "aws_launch_template" "bdw-test-lt" {
 
   metadata_options {
     http_endpoint = "enabled"
-    http_tokens = "optional"
+    http_tokens = "required"
   }
 
   update_default_version = true
